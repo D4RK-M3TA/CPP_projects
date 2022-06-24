@@ -1,0 +1,316 @@
+
+#include <iostream>
+#include <fstream>
+#include <stdio.h>
+#include <stdlib.h>
+using namespace std;
+
+
+class bookshop {
+        public:
+            void control_panel();
+            void add_book();
+            void show_book();
+            void check_book();
+            void update_book();
+            void delete_book();
+};
+
+void bookshop::control_panel() {
+    system("cls");
+    cout << "\t\tCONTROL PANEL" << endl;
+    cout << "\n1. ADD BOOK" << endl;
+    cout << "\n2. DISPLAY BOOK" << endl;
+    cout << "\n3. CHECK FOR A PARTICULAR BOOK" << endl;
+    cout << "\n4. UPDATE BOOK" << endl;
+    cout << "\n5. DELETE BOOK" << endl;
+    cout << "\n6. EXIT" << endl;
+}
+
+void bookshop::add_book() {
+    system("cls");
+    fstream file;
+    int numberOfBooks;
+    string bookName, authorName, bookID;
+    cout << "\t\tADD BOOKS" << endl;
+    cout << "\nBOOK ID: ";
+    cin >> bookID;
+    cout << "\nBOOK NAME: ";
+    getline (cin, bookName);
+    cout << "AUTHOR NAME: ";
+    getline (cin, authorName);
+    cout << "NUMBER OF BOOKS: ";
+    cin >> numberOfBooks;
+
+    file.open("C://.... book.txt",
+                        ios::out | ios::app);
+    file << " " << bookID << " "
+         << bookName << " " << authorName
+         << " " << numberOfBooks << endl;
+    file.close();
+
+
+}
+
+void bookshop::show_book() {
+    system("cls");
+    fstream file;
+    int numberOfBooks;
+    string bookName, authorName, bookID;
+    cout << "\t\t\tALL BOOKS" << endl;
+
+    file.open("C://.... book.txt", ios::in);
+    if (!file)
+    {
+        cout << "\nFile Opening Error!" << endl;
+    } else
+    {
+        cout << "\nBook ID\t\tBook"
+             << "\t\tAuthor\t\tNo. of "
+                "Books\n" << endl;
+
+        file >> bookID >> bookName;
+        file >> authorName >> numberOfBooks;
+
+        while (!file.eof())
+        {
+            cout << "  " << bookID
+                 << "\t\t" << bookName
+                 << "\t\t" << authorName
+                 << "\t\t" << numberOfBooks
+                 << "\n\n";
+            file >> bookID >> bookName;
+            file >> authorName >> numberOfBooks;
+        }
+
+        system("pause");
+        file.close();
+    }
+
+}
+
+void bookshop::check_book() {
+    system("cls");
+    fstream file;
+    int numberOfBooks;
+    int count = 0;
+    string bookID, bookName, authorName, bookID2;
+
+    cout << "\n\t\tCheck "
+         << "Particular Book" << endl;
+
+    file.open("C://.... book.txt", ios::in);
+    if (!file)
+    {
+        cout << "\nFile Opening Error!" << endl;
+    } else
+    {
+        cout << "\nBook ID: ";
+        cin >> bookID2;
+        file >> bookID >> bookName;
+        file >> authorName >> numberOfBooks;
+        
+        while (!file.eof())
+        {
+            if (bookID2 == bookID)
+            {
+                system("cls");
+                cout << "\n\t\t" << "Check For A Particular Book" << endl;
+                cout << "\nBOOK ID: " << bookID << endl;
+                cout << "\nBOOK NAME: " << bookName << endl;
+                cout << "\nNAME OF AUTHOR: " << authorName << endl;
+                cout << "\nNUMBER OF BOOKS AVAILABLE: " << numberOfBooks << endl;
+                cout << endl << endl;
+                count ++;
+                break;
+            }
+        file >> bookID >> bookName;
+        file >> authorName >> numberOfBooks;
+        }
+        system("pause");
+        file.close();
+        if (count == 0)
+        {
+            cout << "\nBOOK ID NOT FOUND....." << endl;
+        }
+    }
+}
+
+void bookshop::update_book() {
+    system("cls");
+    fstream file, file1;
+    int numberOfBooks, numberOfBooks2;
+    int count = 0;
+    string bookName, authorName, bookName2; 
+    string bookID, bookID2, authorName2;
+
+    cout << "\n\t\t UPDATE BOOK RECORD" << endl;
+    file1.open("C://.... book1.txt",
+                ios::app | ios::out);
+    file.open("C://.... book.txt", ios::in);
+    
+    if (!file)
+    {
+        cout << "\nFile Opening Error" << endl;
+    } else
+    {
+        cout << "\nBOOK ID: ";
+        cin >> bookID;
+        file >> bookID2 >> bookName;
+        file >> authorName >> numberOfBooks;
+
+        while (!file.eof())
+        {
+            if (bookID == bookID2)
+            {
+                system("cls");
+                cout << "\n\t\t"
+                     << "UPDATE BOOK RECORD" << endl;
+                cout << "NEW BOOK NAME: ";
+                getline (cin, bookName2);
+                cout << "AUTHOR NAME: ";
+                getline (cin, authorName2);
+                cout << "NUMBER OF BOOKS: ";
+                cin >> numberOfBooks2;
+                file1 << " " << bookID << " "
+                      << bookName2 << " "
+                      << authorName2 << " " << numberOfBooks2
+                      << "\n\n";
+                count++;
+            }
+            else
+            {
+                file1 << " " << bookID2
+                      << " " << bookName
+                      << " " << authorName
+                      << " " << numberOfBooks
+                      << "\n\n";
+                file >> bookID2 >> bookName;
+                file >> authorName >> numberOfBooks;
+            }
+            if (count == 0)
+            {
+                cout << "\nBOOK ID NOT FOUND...." << endl;
+            }
+
+        }
+    }
+    system("pause");
+
+
+    file.close();
+    file1.close();
+    remove("C://.... book.txt");
+    rename("C://.... book1.txt", "C://.... book.txt");
+}
+
+void bookshop::delete_book() {
+    system("cls");
+    fstream file, file1;
+    int numberOfBooks;
+    int count = 0;
+    string bookID, bookID2, bookName, authorName;
+    cout << "\n\t\tDELETE A BOOK" << endl;
+
+    file1.open("C://.... book1.txt",
+                ios::app | ios::out );
+    file.open("C://.... book.txt", ios::in);
+
+    if (!file)
+    {
+        cout << "\nFile Opening Error..." << endl;
+    } 
+    else
+    {
+        cout << " \n BOOK ID: ";
+        cin >> bookID;
+        file >> bookID2 >> bookName;
+        file >> authorName >> numberOfBooks;
+
+        while (!file.eof())
+        {
+            if (bookID == bookID2)
+            {
+                system("cls");
+                cout << "n\t\t"
+                     << "DELETE A BOOK" << endl;
+                cout << "\nBOOK IS DELETED SUCCESSFULLY..." << endl;
+                count++;
+            }
+            else
+            {
+                file1 << " " << bookID2
+                      << " " << bookName
+                      << " " << authorName
+                      << " " << numberOfBooks
+                      << "\n\n";
+
+                file >> bookID2 >> bookName;
+                file >> authorName >> numberOfBooks;
+            }
+            if (count == 0)
+            {
+                cout << "\nBOOK IDNOT FOUND..." <<endl;
+            }
+        }
+        system("pause");
+
+        file.close();
+        file1.close();
+        remove("C://.... book.txt");
+        rename("C://.... book1.txt", "C://.... book.txt");
+    }
+}
+
+void bookShopRecord() {
+    int choice;
+    char x;
+    bookshop b;
+
+    while (1)
+    {
+        b.control_panel();
+        cout << "\nEnter your choice: ";
+        cin >> choice;
+        switch (choice)
+        {
+            case 1:
+            do
+            {
+                b.add_book();
+                cout << "\nWant to Add another book? (Y/N): ";
+                cin >> x;
+            } while(x == 'Y');
+            break;
+
+            case 2:
+            b.show_book();
+            break;
+
+            case 3:
+            b.check_book();
+            break;
+
+            case 4:
+            b.update_book();
+            break;
+
+            case 5:
+            b.delete_book();
+            break;
+
+            case 6:
+            exit(0);
+            break;
+
+            default:
+            cout << "\nINVALID CHOICE" << endl;
+        }
+    }
+}
+
+int main()
+{
+    bookShopRecord(); 
+    return 0;
+}
