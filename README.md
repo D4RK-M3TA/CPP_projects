@@ -1,0 +1,1 @@
+In this system you can add arecord of new books and retrive the records of book already in  the bookshop. You can update book record for any cahnges that occur to the book like the number of books when they increase or decrease. 
